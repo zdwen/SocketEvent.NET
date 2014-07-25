@@ -8,16 +8,10 @@ namespace SocketEvent.Dto
 {
     class SocketEventResponseDto
     {
-        public SocketEventResponseDto()
-        {
-        }
-
         [JsonProperty("requestId")]
         public string RequestId { get; set; }
-
         [JsonProperty("status")]
         public string Status { get; set; }
-
         [JsonProperty("error")]
         public ErrorDto Error { get; set; }
     }

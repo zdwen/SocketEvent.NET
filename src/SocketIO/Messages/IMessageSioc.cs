@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace SocketIOClient.Messages
 {
 	/// <summary>
 	/// Interface for core Message class
 	/// </summary>
-    public interface IMessage
+    public interface IMessageSioc
     {
 		/// <summary>
 		/// Enumeration of one of 9 basic messages provided by socket.io
@@ -42,14 +41,11 @@ namespace SocketIOClient.Messages
         string MessageText { get; }
 
 		JsonEncodedEventMessage Json { get; }
-		[ObsoleteAttribute(".JsonEncodedMessage has been deprecated. Please use .Json instead.")]
-		JsonEncodedEventMessage JsonEncodedMessage { get; }
 		
 		/// <summary>
 		/// <para>Socket.IO encoded message structure - represents the actual message string sent to Socket.IO </para>
 		/// <para>[message type] ':' [message id ('+')] ':' [message endpoint] (':' [message data]) </para>
 		/// </summary>
         string Encoded { get; }
-
     }
 }

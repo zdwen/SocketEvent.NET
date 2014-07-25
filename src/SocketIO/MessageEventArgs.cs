@@ -8,12 +8,12 @@ namespace SocketIOClient
 {
 	public class MessageEventArgs : EventArgs
 	{
-		public IMessage Message { get; private set; }
+		public IMessageSioc Message { get; private set; }
 
-		public MessageEventArgs(IMessage msg)
+		public MessageEventArgs(IMessageSioc msg)
 			: base()
 		{
-			this.Message = msg;
+			Message = msg;
 		}
 	}
 }

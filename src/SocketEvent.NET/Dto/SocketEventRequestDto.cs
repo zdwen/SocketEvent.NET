@@ -10,10 +10,8 @@ namespace SocketEvent.Dto
     {
         [JsonProperty("requestId")]
         public string RequestId { get; set; }
-
         [JsonProperty("event")]
         public string EventName { get; set; }
-
         [JsonProperty("args")]
         public dynamic Args { get; set; }
     }

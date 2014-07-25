@@ -5,9 +5,8 @@ using System.Text;
 
 namespace SocketIOClient.Messages
 {
-    public class ErrorMessage : Message
+    public class MessageSiocError : MessageSioc
     {
-
 		public string Reason { get; set; }
 		public string Advice { get; set; }
 
@@ -16,9 +15,9 @@ namespace SocketIOClient.Messages
 			get { return "error"; }
 		}
 
-		public ErrorMessage()
+		public MessageSiocError()
         {
-            this.MessageType = SocketIOMessageTypes.Error;
+            MessageType = SocketIOMessageTypes.Error;
         }
 
 		/// <summary>
@@ -26,22 +25,23 @@ namespace SocketIOClient.Messages
 		/// </summary>
 		/// <param name="rawMessage">'7::' [endpoint] ':' [reason] '+' [advice]</param>
 		/// <returns>ErrorMessage</returns>
-		public static ErrorMessage Deserialize(string rawMessage)
+		public static MessageSiocError Deserialize(string rawMessage)
 		{
-			ErrorMessage errMsg = new ErrorMessage();
+			MessageSiocError msg = new MessageSiocError();
 			string[] args = rawMessage.Split(':');
 			if (args.Length == 4)
 			{
-				errMsg.Endpoint = args[2];
-				errMsg.MessageText = args[3];
+				msg.Endpoint = args[2];
+				msg.MessageText = args[3];
 				string[] complex = args[3].Split(new char[] { '+' });
 				if (complex.Length > 1)
 				{
-					errMsg.Advice = complex[1];
-					errMsg.Reason = complex[0];
+					msg.Advice = complex[1];
+					msg.Reason = complex[0];
 				}
 			}
-			return errMsg;
+
+			return msg;
 		}
     }
 }

@@ -10,10 +10,8 @@ namespace SocketEvent.Dto
     {
         [JsonProperty("name")]
         public string Name { get; set; }
-
         [JsonProperty("message")]
         public string Message { get; set; }
-
         [JsonProperty("stack")]
         public string Stack { get; set; }
 

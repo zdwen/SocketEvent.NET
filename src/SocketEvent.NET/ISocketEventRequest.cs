@@ -8,9 +8,7 @@ namespace SocketEvent
     public interface ISocketEventRequest
     {
         string EventName { get; }
-
         string RequestId { get; }
-
         dynamic Args { get; }
     }
 }

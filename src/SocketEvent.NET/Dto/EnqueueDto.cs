@@ -13,13 +13,10 @@ namespace SocketEvent.Dto
         /// </summary>
         [JsonProperty("event")]
         public string Event { get; set; }
-
         [JsonProperty("tryTimes")]
         public int TryTimes { get; set; }
-
         [JsonProperty("timeout")]
         public int Timeout { get; set; }
-
         [JsonProperty("args")]
         public dynamic Args { get; set; }
     }

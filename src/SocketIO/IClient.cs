@@ -1,4 +1,7 @@
 ﻿using System;
+using WebSocket4Net;
+using SocketIOClient.Messages;
+
 namespace SocketIOClient
 {
 	/// <summary>
@@ -8,26 +11,25 @@ namespace SocketIOClient
 	{
 		event EventHandler Opened;
 		event EventHandler<MessageEventArgs> Message;
-		event EventHandler SocketConnectionClosed;
-		event EventHandler<ErrorEventArgs> Error;
+		event EventHandler Closed;
+		event EventHandler<EventArgsSiocError> Error;
 
 		SocketIOHandshake HandShake { get; }
 		bool IsConnected { get; }
-		WebSocket4Net.WebSocketState ReadyState { get; }
+		WebSocketState ReadyState { get; }
 
 		void Connect();
 		IEndPointClient Connect(string endPoint);
 
 		void Close();
-		void Dispose();
 
-		void On(string eventName, Action<SocketIOClient.Messages.IMessage> action);
-		void On(string eventName, string endPoint, Action<SocketIOClient.Messages.IMessage> action);
+		void On(string eventName, Action<IMessageSioc> action);
+		void On(string eventName, string endPoint, Action<IMessageSioc> action);
 
 		void Emit(string eventName, dynamic payload);
 		void Emit(string eventName, dynamic payload, string endPoint = "", Action<dynamic> callBack = null);
 		
-		void Send(SocketIOClient.Messages.IMessage msg);
+		void Send(SocketIOClient.Messages.IMessageSioc msg);
 		//void Send(string rawEncodedMessageText);
 	}
 }

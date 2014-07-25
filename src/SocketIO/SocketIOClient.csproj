@@ -22,7 +22,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\debug\SocketIOClient.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -88,25 +89,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="ErrorEventArgs.cs" />
+    <Compile Include="EventArgsSiocError.cs" />
     <Compile Include="Helpers\SocketIOHandshake.cs" />
     <Compile Include="Helpers\SocketIOMessageTypes.cs" />
     <Compile Include="IClient.cs" />
     <Compile Include="IEndPointClient.cs" />
     <Compile Include="MessageEventArgs.cs" />
-    <Compile Include="Messages\AckMessage.cs" />
-    <Compile Include="Messages\DisconnectMessage.cs" />
-    <Compile Include="Messages\Message.cs" />
-    <Compile Include="Messages\ConnectMessage.cs" />
-    <Compile Include="Messages\ErrorMessage.cs" />
-    <Compile Include="Messages\EventMessage.cs" />
-    <Compile Include="Messages\Heartbeat.cs" />
+    <Compile Include="Messages\MessageSiocAck.cs" />
+    <Compile Include="Messages\MessageSiocDisconnect.cs" />
+    <Compile Include="Messages\MessageSioc.cs" />
+    <Compile Include="Messages\MessageSiocConnect.cs" />
+    <Compile Include="Messages\MessageSiocError.cs" />
+    <Compile Include="Messages\MessageSiocEvent.cs" />
+    <Compile Include="Messages\MessageSiocHeartbeat.cs" />
     <Compile Include="Messages\Helper\JsonEncodedEventMessage.cs" />
-    <Compile Include="Messages\IMessage.cs" />
-    <Compile Include="Messages\JSONMessage.cs" />
-    <Compile Include="Messages\NoopMessage.cs" />
+    <Compile Include="Messages\IMessageSioc.cs" />
+    <Compile Include="Messages\MessageSiocJson.cs" />
+    <Compile Include="Messages\MessageSiocNoop.cs" />
     <Compile Include="Messages\RegistrationManager.cs" />
-    <Compile Include="Messages\TextMessage.cs" />
+    <Compile Include="Messages\MessageSiocText.cs" />
     <Compile Include="EndPointClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

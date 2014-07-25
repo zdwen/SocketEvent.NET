@@ -8,15 +8,16 @@ namespace SocketIOClient.Messages
 	/// <summary>
 	/// Defined as No operation. Used for example to close a poll after the polling duration times out.
 	/// </summary>
-    public class NoopMessage : Message
+    public class MessageSiocNoop : MessageSioc
     {
-        public NoopMessage()
+        public MessageSiocNoop()
         {
-            this.MessageType = SocketIOMessageTypes.Noop;
+            MessageType = SocketIOMessageTypes.Noop;
         }
-        public static NoopMessage Deserialize(string rawMessage)
+
+        public static MessageSiocNoop Deserialize(string rawMessage)
         {
-			return new NoopMessage();
+			return new MessageSiocNoop();
         }
     }
 }

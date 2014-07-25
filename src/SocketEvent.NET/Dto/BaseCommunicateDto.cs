@@ -10,7 +10,7 @@ namespace SocketEvent.Dto
     {
         public BaseCommunicateDto()
         {
-            this.RequestId = Guid.NewGuid().ToString();
+            RequestId = Guid.NewGuid().ToString();
         }
 
         /// <summary>
@@ -18,7 +18,6 @@ namespace SocketEvent.Dto
         /// </summary>
         [JsonProperty("requestId")]
         public string RequestId { get; set; }
-
         /// <summary>
         /// ID of subscriber.
         /// </summary>

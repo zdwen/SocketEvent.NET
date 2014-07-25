@@ -14,12 +14,10 @@ namespace SocketEvent
         /// Get request ID.
         /// </summary>
         string RequestId { get; }
-
         /// <summary>
         /// Get response status.
         /// </summary>
         RequestResult Status { get; }
-
         /// <summary>
         /// Get error sent from server. Available only if Status == RequestResult.Fail
         /// </summary>

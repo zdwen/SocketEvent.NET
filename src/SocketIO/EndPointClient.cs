@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using SocketIOClient.Messages;
 
 namespace SocketIOClient
 {
@@ -12,12 +13,12 @@ namespace SocketIOClient
 
 		public EndPointClient(IClient client, string endPoint)
 		{
-			this.validateNameSpace(endPoint);
-			this.Client = client;
-			this.EndPoint = endPoint;
+			ValidateNameSpace(endPoint);
+			Client = client;
+			EndPoint = endPoint;
 		}
 
-		private void validateNameSpace(string name)
+		void ValidateNameSpace(string name)
 		{
 			if (string.IsNullOrWhiteSpace(name))
 				throw new ArgumentNullException("nameSpace", "Parameter cannot be null");
@@ -25,20 +26,20 @@ namespace SocketIOClient
 				throw new ArgumentException("Parameter cannot contain ':' characters", "nameSpace");
 		}
 			
-		public void On(string eventName, Action<Messages.IMessage> action)
+		public void On(string eventName, Action<IMessageSioc> action)
 		{
-			this.Client.On(eventName, this.EndPoint, action);
+			Client.On(eventName, EndPoint, action);
 		}
 
 		public void Emit(string eventName, dynamic payload, Action<dynamic> callBack = null)
 		{
-			this.Client.Emit(eventName, payload, this.EndPoint, callBack);
+			Client.Emit(eventName, payload, EndPoint, callBack);
 		}
 
-		public void Send(Messages.IMessage msg)
+		public void Send(IMessageSioc msg)
 		{
-			msg.Endpoint = this.EndPoint;
-			this.Client.Send(msg);
+			msg.Endpoint = EndPoint;
+			Client.Send(msg);
 		}
 	}
 }

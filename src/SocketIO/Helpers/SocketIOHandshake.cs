@@ -8,70 +8,62 @@ namespace SocketIOClient
 {
     public class SocketIOHandshake
     {
+        int _connTimeout { get; set; }
+        List<string> _transports = new List<string>();
+
         public string SID { get; set; }
         public int HeartbeatTimeout { get; set; }
-		public string ErrorMessage { get; set; }
-		public bool HadError
-		{
-			get { return !string.IsNullOrWhiteSpace(this.ErrorMessage); }
+        public string ErrorMessage { get; set; }
+        public NameValueCollection Headers { get; set; }
 
-		}
-		/// <summary>
-		/// The HearbeatInterval will be approximately 20% faster than the Socket.IO service indicated was required
-		/// </summary>
-        public TimeSpan HeartbeatInterval
+        public bool HasError { get { return !string.IsNullOrWhiteSpace(ErrorMessage); } }
+        /// <summary>
+        /// The HearbeatInterval will be approximately 20% faster than the Socket.IO service indicated was required
+        /// </summary>
+        public TimeSpan HeartbeatInterval { get { return new TimeSpan(0, 0, HeartbeatTimeout); } }
+
+
+
+
+        public SocketIOHandshake()
         {
-            get
-            {
-                return new TimeSpan(0, 0, HeartbeatTimeout);
-            }
+            Headers = new NameValueCollection();
         }
-        public int ConnectionTimeout { get; set; }
-        public List<string> Transports = new List<string>();
 
-		public NameValueCollection Headers;
+        public SocketIOHandshake(NameValueCollection headers)
+        {
+            Headers = headers == null
+                ? new NameValueCollection()
+                : headers;
+        }
 
-		public SocketIOHandshake()
-		{
-			this.Headers = new NameValueCollection();
-		}
-		public SocketIOHandshake(NameValueCollection headers)
-		{
-			if (headers == null)
-				this.Headers = new NameValueCollection();
-			else
-				this.Headers = headers;
-		}
+        public void ResetConnection()
+        {
+            SID = ErrorMessage = string.Empty;
+        }
 
-		public void ResetConnection()
-		{
-			this.SID = string.Empty;
-			this.ErrorMessage = string.Empty;
-		}
-		/// <summary>
-		/// </summary>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public void UpdateFromSocketIOResponse(string value)
+        public void UpdateFromSocketIOResponse(string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
-				this.ErrorMessage = string.Empty;
+                ErrorMessage = string.Empty;
                 string[] items = value.Split(new char[] { ':' });
                 if (items.Count() == 4)
                 {
-                    int hb = 0;
-                    int ct = 0;
-                    this.SID = items[0];
+                    SID = items[0];
 
+                    int hb = 0;
                     if (int.TryParse(items[1], out hb))
-                    { 
+                    {
                         var pct = (int)(hb * .75);  // setup client time to occur 25% faster than needed
-						this.HeartbeatTimeout = pct;
+                        HeartbeatTimeout = pct;
                     }
+
+                    int ct = 0;
                     if (int.TryParse(items[2], out ct))
-						this.ConnectionTimeout = ct;
-					this.Transports.AddRange(items[3].Split(new char[] { ',' }));
+                        _connTimeout = ct;
+
+                    _transports.AddRange(items[3].Split(new char[] { ',' }));
                 }
             }
         }

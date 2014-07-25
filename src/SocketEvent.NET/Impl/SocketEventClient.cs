@@ -15,28 +15,27 @@ namespace SocketEvent.Impl
     class SocketEventClient : ISocketEventClient
     {
         public const string SUBSCRIBE = "subscribe";
-
         public const string UNSUBSCRIBE = "unsubscribe";
-
         public const string ENQUEUE = "enqueue";
 
-        protected ConcurrentDictionary<string, dynamic> eventStore;
-
-        private Client socket;
-
-        private Semaphore locker;
+        /// <summary>
+        /// 【闻祖东 2014-7-25-110254】用于保存订阅事件及参数以便重新注册。
+        /// </summary>
+        ConcurrentDictionary<string, dynamic> _dicEvents;
+        Client _socketIoClient;
+        Semaphore _locker;
 
         public SocketEventClient(string url)
-            : this(Guid.NewGuid().ToString(), url)
-        {
-        }
+            : this(Guid.NewGuid().ToString(), url) { }
 
         public SocketEventClient(string id, string url)
         {
-            this.ClientId = id;
-            this.Url = url;
-            this.eventStore = new ConcurrentDictionary<string, dynamic>();
-            this.locker = new Semaphore(1, 1);
+            ClientId = id;
+            Url = url;
+            _dicEvents = new ConcurrentDictionary<string, dynamic>();
+            _locker = new Semaphore(1, 1);
+
+            InitSocketIoClient();
         }
 
         public string ClientId { get; set; }
@@ -45,28 +44,15 @@ namespace SocketEvent.Impl
 
         public string Url { get; set; }
 
-        private Client Socket
-        {
-            get
-            {
-                if (this.socket == null)
-                {
-                    this.InitSocket();
-                }
-
-                return this.socket;
-            }
-        }
-
         public void Subscribe(string eventName, Func<ISocketEventRequest, RequestResult> eventCallback, Action<ISocketEventResponse> subscribeReadyCallback = null)
         {
-            this.eventStore[eventName] = new
+            _dicEvents[eventName] = new
             {
                 eventCallback = eventCallback,
                 subscribeReadyCallback = subscribeReadyCallback
             };
 
-            this.DoSubscribe(eventName, eventCallback, subscribeReadyCallback);
+            DoSubscribe(eventName, eventCallback, subscribeReadyCallback);
         }
 
         public void Unsubscribe(string eventName, Action<ISocketEventResponse> callback)
@@ -76,103 +62,108 @@ namespace SocketEvent.Impl
 
         public void Enqueue(string eventName, int tryTimes = 1, int timeout = 60, dynamic args = null, Action<ISocketEventResponse> callback = null)
         {
-            this.locker.WaitOne();
+            _locker.WaitOne();
             var dto = new EnqueueDto()
             {
                 Event = eventName,
-                SenderId = this.ClientId,
+                SenderId = ClientId,
                 TryTimes = tryTimes == 0 ? 1 : tryTimes,
                 Timeout = timeout,
                 Args = args
             };
 
-            this.Socket.Emit(ENQUEUE, dto, string.Empty, (data) =>
+            _socketIoClient.Emit(ENQUEUE, dto, string.Empty, (data) =>
                 {
                     var json = data as JsonEncodedEventMessage;
                     var result = JsonConvert.DeserializeObject<SocketEventResponseDto>(json.Args[0]);
                     var response = Mapper.Map<SocketEventResponseDto, SocketEventResponse>(result);
 
                     if (callback != null)
-                    {
                         callback(response);
-                    }
-                    this.locker.Release();
+
+                    _locker.Release();
                 });
         }
 
         public void Enqueue(string eventName, Action<ISocketEventResponse> callback)
         {
-            this.Enqueue(eventName, 0, 60, null, callback);
+            Enqueue(eventName, 0, 60, null, callback);
         }
 
         public void Dispose()
         {
             // enqueue should have been finished within 60s.
-            this.locker.WaitOne(600000);
-            if (this.socket != null)
-            {
-                this.socket.Dispose();
-            }
-            this.locker.Dispose();
+            _locker.WaitOne(600 * 1000);///TODO【闻祖东 2014-7-25-183918】到底是应该60s还是600s？ 按照原代码和注释之间是互相不一致的。
+            _socketIoClient.Dispose();
+            _locker.Dispose();
         }
 
-        protected void DoSubscribe(string eventName, Func<ISocketEventRequest, RequestResult> eventCallback, Action<ISocketEventResponse> subscribeReadyCallback)
+
+
+        void DoSubscribe(string eventName, Func<ISocketEventRequest, RequestResult> eventCallback, Action<ISocketEventResponse> subscribeReadyCallback)
         {
-            this.Socket.On(eventName, (msg) =>
+            _socketIoClient.On(eventName, (msg) =>
             {
-                var dto = JsonConvert.DeserializeObject<SocketEventRequestDto>(msg.Json.Args[0].ToString());
-                var request = Mapper.Map<SocketEventRequestDto, SocketEventRequest>(dto);
-                var result = eventCallback(request);
+                SocketEventRequestDto dto = JsonConvert.DeserializeObject<SocketEventRequestDto>(msg.Json.Args[0].ToString());
+                SocketEventRequest request = Mapper.Map<SocketEventRequestDto, SocketEventRequest>(dto);
+                RequestResult result = eventCallback(request);
 
                 // Simulate a ack callback because SocketIO4Net doesn't provide one by default.
-                var msgText = JsonConvert.SerializeObject(new object[] {
+                object[] ackObj = new object[] {
                     new SocketEventResponseDto() {
                         RequestId = request.RequestId,
                         Status = result.ToString().ToUpper()
                     }
-                });
-                var ack = new AckMessage()
+                };
+
+                //string msgText = JsonConvert.SerializeObject(new object[] {
+                //    new SocketEventResponseDto() {
+                //        RequestId = request.RequestId,
+                //        Status = result.ToString().ToUpper()
+                //    }
+                //});
+
+                MessageSiocAck ack = new MessageSiocAck()
                 {
                     AckId = msg.AckId,
-                    MessageText = msgText
+                    MessageText = JsonConvert.SerializeObject(ackObj),
                 };
-                this.Socket.Send(ack);
+
+                _socketIoClient.Send(ack);
             });
-            var subscribeDto = new SubscribeDto()
+
+            SubscribeDto subscribeDto = new SubscribeDto()
             {
                 Event = eventName,
-                SenderId = this.ClientId
+                SenderId = ClientId
             };
-            this.Socket.Emit(SUBSCRIBE, subscribeDto, string.Empty, (data) =>
+
+            _socketIoClient.Emit(SUBSCRIBE, subscribeDto, string.Empty, (data) =>
             {
-                var json = data as JsonEncodedEventMessage;
-                var result = JsonConvert.DeserializeObject<SocketEventResponseDto>(json.Args[0]);
-                var response = Mapper.Map<SocketEventResponseDto, SocketEventResponse>(result);
+                JsonEncodedEventMessage json = data as JsonEncodedEventMessage;
+                SocketEventResponseDto result = JsonConvert.DeserializeObject<SocketEventResponseDto>(json.Args[0]);
+                SocketEventResponse response = Mapper.Map<SocketEventResponseDto, SocketEventResponse>(result);
 
                 if (subscribeReadyCallback != null)
-                {
                     subscribeReadyCallback(response);
-                }
             });
         }
 
-        private void RedoSubscription()
+        void RedoSubscription(object sender, EventArgs e)
         {
-            foreach (var entry in this.eventStore)
-            {
-                this.DoSubscribe(entry.Key, entry.Value.eventCallback, entry.Value.subscribeReadyCallback);
-            }
+            foreach (var entry in _dicEvents)
+                DoSubscribe(entry.Key, entry.Value.eventCallback, entry.Value.subscribeReadyCallback);
         }
 
-        private void InitSocket()
+        void InitSocketIoClient()
         {
-            this.socket = new Client(this.Url);
-            this.socket.RetryConnectionAttempts = int.MaxValue;
-            this.socket.ConnectionReconnect += new EventHandler((sender, args) =>
-                {
-                    this.RedoSubscription();
-                });
-            this.socket.Connect();
+            _socketIoClient = new Client(Url)
+            {
+                RetryConnectionAttempts = int.MaxValue,
+            };
+
+            _socketIoClient.ConnectionReconnect += RedoSubscription;
+            _socketIoClient.Connect();
         }
     }
 }

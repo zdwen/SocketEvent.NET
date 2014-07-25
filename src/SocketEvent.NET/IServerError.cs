@@ -8,9 +8,7 @@ namespace SocketEvent
     public interface IServerError
     {
         string Name { get; }
-
         string Message { get; }
-
         string Stack { get; set; }
     }
 }
