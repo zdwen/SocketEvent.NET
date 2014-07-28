@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace SocketEvent.Dto
 {
-    class BaseCommunicateDto
+    public class BaseCommunicateDto
     {
         public BaseCommunicateDto()
         {

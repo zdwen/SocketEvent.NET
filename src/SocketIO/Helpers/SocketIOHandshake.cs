@@ -9,7 +9,6 @@ namespace SocketIOClient
     public class SocketIOHandshake
     {
         int _connTimeout { get; set; }
-        List<string> _transports = new List<string>();
 
         public string SID { get; set; }
         public int HeartbeatTimeout { get; set; }
@@ -54,16 +53,11 @@ namespace SocketIOClient
 
                     int hb = 0;
                     if (int.TryParse(items[1], out hb))
-                    {
-                        var pct = (int)(hb * .75);  // setup client time to occur 25% faster than needed
-                        HeartbeatTimeout = pct;
-                    }
+                        HeartbeatTimeout = (int)(hb * .75);  // setup client time to occur 25% faster than needed
 
                     int ct = 0;
                     if (int.TryParse(items[2], out ct))
                         _connTimeout = ct;
-
-                    _transports.AddRange(items[3].Split(new char[] { ',' }));
                 }
             }
         }

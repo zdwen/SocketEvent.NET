@@ -5,12 +5,10 @@ using System.Text;
 
 namespace SocketEvent.Impl
 {
-    class SocketEventResponse: ISocketEventResponse
+    public class SocketEventResponse
     {
         public string RequestId { get; set; }
-
         public RequestResult Status { get; set; }
-
-        public IServerError Error { get; set; }
+        public ServerError Error { get; set; }
     }
 }

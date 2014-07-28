@@ -37,7 +37,7 @@ namespace SocketEvent
             Mapper.CreateMap<SocketEventRequestDto, SocketEventRequest>();
         }
 
-        private SocketEventClientFactory()
+        SocketEventClientFactory()
         {
         }
 
@@ -46,7 +46,7 @@ namespace SocketEvent
         /// </summary>
         /// <param name="url">Server URL</param>
         /// <returns>SocketEventClient</returns>
-        public static ISocketEventClient CreateInstance(string url)
+        public static SocketEventClient CreateInstance(string url)
         {
             return new SocketEventClient(url);
         }
@@ -57,7 +57,7 @@ namespace SocketEvent
         /// <param name="id">ID of this client</param>
         /// <param name="url">Server URL</param>
         /// <returns>SocketEventClient</returns>
-        public static ISocketEventClient CreateInstance(string id, string url)
+        public static SocketEventClient CreateInstance(string id, string url)
         {
             return new SocketEventClient(id, url);
         }

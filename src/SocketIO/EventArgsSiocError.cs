@@ -18,6 +18,7 @@ namespace SocketIOClient
         {
             Message = message;
         }
+
         public EventArgsSiocError(string message, Exception exception)
             : base()
         {

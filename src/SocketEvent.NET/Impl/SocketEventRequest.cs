@@ -5,12 +5,10 @@ using System.Text;
 
 namespace SocketEvent.Impl
 {
-    class SocketEventRequest: ISocketEventRequest
+    public class SocketEventRequest
     {
         public string EventName { get; set; }
-
         public string RequestId { get; set; }
-
         public dynamic Args { get; set; }
     }
 }
