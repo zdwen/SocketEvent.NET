@@ -102,39 +102,39 @@ namespace SocketIOClient.Messages
             }
         }
         
-        public static IMessageSioc Factory(string rawMessage)
+        public static IMessageSioc Factory(string rawMsg)
         {
-            if (reMessageType.IsMatch(rawMessage))
+            if (reMessageType.IsMatch(rawMsg))
             {
-                char id = rawMessage.First();
+                char id = rawMsg.First();
                 switch (id)
                 {
                     case '0':
-                        return MessageSiocDisconnect.Deserialize(rawMessage);
+                        return MessageSiocDisconnect.Deserialize(rawMsg);
                     case '1':
-                        return MessageSiocConnect.Deserialize(rawMessage);
+                        return MessageSiocConnect.Deserialize(rawMsg);
                     case '2':
                         return new MessageSiocHeartbeat();
                     case '3':
-                        return MessageSiocText.Deserialize(rawMessage);
+                        return MessageSiocText.Deserialize(rawMsg);
                     case '4':
-                        return MessageSiocJson.Deserialize(rawMessage);
+                        return MessageSiocJson.Deserialize(rawMsg);
                     case '5':
-                        return MessageSiocEvent.Deserialize(rawMessage);
+                        return MessageSiocEvent.Deserialize(rawMsg);
                     case '6':
-                        return MessageSiocAck.Deserialize(rawMessage);
+                        return MessageSiocAck.Deserialize(rawMsg);
                     case '7':
-                        return MessageSiocError.Deserialize(rawMessage);
+                        return MessageSiocError.Deserialize(rawMsg);
                     case '8':
                         return new MessageSiocNoop();
                     default:
-                        Trace.WriteLine(string.Format("Message.Factory undetermined message: {0}", rawMessage));
+                        Trace.WriteLine(string.Format("Message.Factory undetermined message: {0}", rawMsg));
                         return new MessageSiocText();
                 }
             }
             else
             {
-                Trace.WriteLine(string.Format("Message.Factory did not find matching message type: {0}", rawMessage));
+                Trace.WriteLine(string.Format("Message.Factory did not find matching message type: {0}", rawMsg));
                 return new MessageSiocNoop();
             }
         }

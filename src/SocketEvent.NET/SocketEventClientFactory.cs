@@ -10,37 +10,6 @@ namespace SocketEvent
 {
     public class SocketEventClientFactory
     {
-        static SocketEventClientFactory()
-        {
-            Mapper.CreateMap<string, RequestResult>()
-                .ConvertUsing(new Func<string, RequestResult>((src) =>
-                    {
-                        RequestResult result;
-                        if (Enum.TryParse<RequestResult>(src, true, out result))
-                        {
-                            return result;
-                        }
-                        else
-                        {
-                            return RequestResult.Fail;
-                        }
-                    }));
-            Mapper.CreateMap<RequestResult, string>()
-                .ConvertUsing(new Func<RequestResult, string>((src) =>
-                    {
-                        return src.ToString().ToUpper();
-                    }));
-
-            Mapper.CreateMap<SocketEventResponse, SocketEventResponseDto>();
-            Mapper.CreateMap<SocketEventResponseDto, SocketEventResponse>();
-            Mapper.CreateMap<SocketEventRequest, SocketEventRequestDto>();
-            Mapper.CreateMap<SocketEventRequestDto, SocketEventRequest>();
-        }
-
-        SocketEventClientFactory()
-        {
-        }
-
         /// <summary>
         /// Connect to a socket event URL
         /// </summary>

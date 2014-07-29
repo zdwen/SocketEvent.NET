@@ -22,51 +22,26 @@ namespace SocketIOClient.Eventing
             _eventNameRegistry = new ConcurrentDictionary<string, Action<IMessageSioc>>();
         }
 
-        public void AddCallBack(IMessageSioc message)
+        public void AddCallBack(MessageSiocEvent eventMessage)
         {
-            MessageSiocEvent eventMessage = message as MessageSiocEvent;
-            if (eventMessage != null)
-                _callBackRegistry.AddOrUpdate(eventMessage.AckId.Value, eventMessage.Callback, (key, oldValue) => eventMessage.Callback);
+            _callBackRegistry.AddOrUpdate(eventMessage.AckId.Value, eventMessage.Callback, (key, oldValue) => eventMessage.Callback);
         }
 
-        public void AddCallBack(int ackId, Action<dynamic> callback)
-        {
-            _callBackRegistry.AddOrUpdate(ackId, callback, (key, oldValue) => callback);
-        }
-
-        public void InvokeCallBack(int? ackId, string value)
-        {
-            Action<dynamic> target = null;
-            if (ackId.HasValue)
-            {
-                if (_callBackRegistry.TryRemove(ackId.Value, out target)) // use TryRemove - callbacks are one-shot event registrations
-                {
-                    target.BeginInvoke(value, target.EndInvoke, null);
-                }
-            }
-        }
-
+        /// <summary>
+        /// TODO【闻祖东 2014-7-29-150240】？？这个地方最后还是改成异步调用
+        /// </summary>
+        /// <param name="ackId"></param>
+        /// <param name="value"></param>
         public void InvokeCallBack(int? ackId, JsonEncodedEventMessage value)
         {
             Action<dynamic> target = null;
-            if (ackId.HasValue)
-            {
-                if (_callBackRegistry.TryRemove(ackId.Value, out target))
-                {
-                    target.Invoke(value);
-                    //target.BeginInvoke(value, target.EndInvoke, null);
-                }
-            }
+            if (ackId.HasValue && _callBackRegistry.TryRemove(ackId.Value, out target))
+                target.Invoke(value);
         }
 
         public void AddOnEvent(string eventName, Action<IMessageSioc> callback)
         {
             _eventNameRegistry.AddOrUpdate(eventName, callback, (key, oldValue) => callback);
-        }
-
-        public void AddOnEvent(string eventName, string endPoint, Action<IMessageSioc> callback)
-        {
-            _eventNameRegistry.AddOrUpdate(string.Format("{0}::{1}", eventName, endPoint), callback, (key, oldValue) => callback);
         }
 
         /// <summary>
@@ -75,31 +50,17 @@ namespace SocketIOClient.Eventing
         /// <param name="eventName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool InvokeOnEvent(IMessageSioc value)
+        public void InvokeOnEvent(IMessageSioc value)
         {
-            bool foundEvent = false;
-            try
+            string eventName = value.Event;
+            if (!string.IsNullOrWhiteSpace(value.Endpoint))
+                eventName = string.Format("{0}::{1}", value.Event, value.Endpoint);
+
+            if (_eventNameRegistry.ContainsKey(eventName))
             {
-                Action<IMessageSioc> target;
-
-                string eventName = value.Event;
-                if (!string.IsNullOrWhiteSpace(value.Endpoint))
-                    eventName = string.Format("{0}::{1}", value.Event, value.Endpoint);
-
-                if (_eventNameRegistry.TryGetValue(eventName, out target)) // use TryGet - do not destroy event name registration
-                {
-                    foundEvent = true;
-                    target.Invoke(value);
-                    //target.BeginInvoke(value, target.EndInvoke, null);
-                    //Trace.WriteLine(string.Format("webSocket_{0}: {1}", value.Event, value.MessageText));
-                }
+                ///TODO【闻祖东 2014-7-29-115326】代码注释说这个地方需要异步，但是实际上是在执行同步？
+                _eventNameRegistry[eventName].Invoke(value);
             }
-            catch (Exception ex)
-            {
-                Trace.WriteLine("Exception on InvokeOnEvent: " + ex.Message);
-            }
-
-            return foundEvent;
         }
 
         public void Dispose()

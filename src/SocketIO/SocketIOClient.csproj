@@ -106,6 +106,7 @@
     <Compile Include="Messages\MessageSiocNoop.cs" />
     <Compile Include="Messages\RegistrationManager.cs" />
     <Compile Include="Messages\MessageSiocText.cs" />
+    <Compile Include="Models\Enums\SocketIOEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

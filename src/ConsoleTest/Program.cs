@@ -5,6 +5,7 @@ using System.Text;
 using SocketEvent;
 using System.Threading;
 using SocketEvent.Impl;
+using SocketEvent.Dto;
 
 namespace ConsoleTest
 {
@@ -22,21 +23,22 @@ namespace ConsoleTest
         public static void SubscribeTest()
         {
             SocketEventClient client = SocketEventClientFactory.CreateInstance("MerchantServiceClient", URL);
-            client.BizArrived += new Func<SocketEventRequest, RequestResult>(client_BizArrived);
-            client.BizSubscribed += new Action<SocketEventResponse>(client_BizSubscribed);
-            client.Subscribe("PriceChanged");
+            client.BizArrived += new Func<SocketEventRequestDto, RequestResult>(client_BizArrived);
+            client.BizSubscribed += new Action<SocketEventResponseDto>(client_BizSubscribed);
 
+            client.Subscribe("PriceChanged");
+            client.Subscribe("PublishSalesState");
             //client.Enqueue(eventName);
         }
 
-        static void client_BizSubscribed(SocketEventResponse response)
+        static void client_BizSubscribed(SocketEventResponseDto resp)
         {
-            SocketEventResponse serverResponse = response;
+            SocketEventResponseDto serverResponse = resp;
         }
 
-        static RequestResult client_BizArrived(SocketEventRequest request)
+        static RequestResult client_BizArrived(SocketEventRequestDto request)
         {
-            SocketEventRequest serverRequest = request;
+            SocketEventRequestDto serverRequest = request;
             return RequestResult.Success;
         }
     }

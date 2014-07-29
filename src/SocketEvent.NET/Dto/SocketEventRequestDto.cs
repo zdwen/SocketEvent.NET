@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace SocketEvent.Dto
 {
-    class SocketEventRequestDto
+    public class SocketEventRequestDto
     {
         [JsonProperty("requestId")]
         public string RequestId { get; set; }

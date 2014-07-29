@@ -18,9 +18,8 @@ namespace SocketEvent.Impl
         public const string UNSUBSCRIBE = "unsubscribe";
         public const string ENQUEUE = "enqueue";
 
-        public string ClientId { get; set; }
-        public string Url { get; set; }
-
+        string _clientId;
+        string _url;
         Client _socketIoClient;
 
         public SocketEventClient(string url)
@@ -28,13 +27,11 @@ namespace SocketEvent.Impl
 
         public SocketEventClient(string id, string url)
         {
-            ClientId = id;
-            Url = url;
+            _clientId = id;
+            _url = url;
 
             InitSocketIoClient();
         }
-
-        
 
         public void Dispose()
         {
@@ -49,16 +46,16 @@ namespace SocketEvent.Impl
         /// </summary>
         /// <param name="req"></param>
         /// <returns></returns>
-        public event Func<SocketEventRequest, RequestResult> BizArrived;
+        public event Func<SocketEventRequestDto, RequestResult> BizArrived;
         /// <summary>
         /// 【闻祖东 2014-7-28-162248】业务订阅完成后的事件。
         /// </summary>
-        public event Action<SocketEventResponse> BizSubscribed;
+        public event Action<SocketEventResponseDto> BizSubscribed;
 
         void SocketHandler_On(IMessageSioc msg)
         {
-            SocketEventRequestDto dto = JsonConvert.DeserializeObject<SocketEventRequestDto>(msg.Json.Args[0].ToString());
-            SocketEventRequest request = Mapper.Map<SocketEventRequestDto, SocketEventRequest>(dto);
+            SocketEventRequestDto request = JsonConvert.DeserializeObject<SocketEventRequestDto>(msg.Json.Args[0].ToString());
+
             RequestResult result = BizArrived.Invoke(request);
 
             // Simulate a ack callback because SocketIO4Net doesn't provide one by default.
@@ -83,9 +80,8 @@ namespace SocketEvent.Impl
         {
             JsonEncodedEventMessage json = data as JsonEncodedEventMessage;
             SocketEventResponseDto result = JsonConvert.DeserializeObject<SocketEventResponseDto>(json.Args[0]);
-            SocketEventResponse response = Mapper.Map<SocketEventResponseDto, SocketEventResponse>(result);
 
-            BizSubscribed.Invoke(response);
+            BizSubscribed.Invoke(result);
         }
 
 
@@ -97,7 +93,7 @@ namespace SocketEvent.Impl
             SubscribeDto subscribeDto = new SubscribeDto()
             {
                 Event = eventName,
-                SenderId = ClientId
+                SenderId = _clientId
             };
 
             _socketIoClient.Emit(SUBSCRIBE, subscribeDto, string.Empty, SocketHandler_Emit);
@@ -106,14 +102,12 @@ namespace SocketEvent.Impl
         /// <summary>
         /// TODO【闻祖东 2014-7-28-173407】这个地方，需要实现异步。
         /// </summary>
-        public void Enqueue(string eventName, int tryTimes = 1, int timeout = 60, dynamic args = null)
+        public void Enqueue(string eventName, dynamic args = null)
         {
             EnqueueDto dto = new EnqueueDto()
             {
                 Event = eventName,
-                SenderId = ClientId,
-                TryTimes = tryTimes == 0 ? 1 : tryTimes,
-                Timeout = timeout,
+                SenderId = _clientId,
                 Args = args
             };
 
@@ -134,7 +128,7 @@ namespace SocketEvent.Impl
 
         void InitSocketIoClient()
         {
-            _socketIoClient = new Client(Url)
+            _socketIoClient = new Client(_url)
             {
                 RetryConnectionAttempts = int.MaxValue,
             };
