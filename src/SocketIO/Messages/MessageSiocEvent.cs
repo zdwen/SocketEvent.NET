@@ -39,30 +39,23 @@ namespace SocketIOClient.Messages
             //  '5:' [message id ('+')] ':' [message endpoint] ':' [json encoded event]
             //   5:1::{"a":"b"}
             evtMsg.RawMessage = rawMessage;
-            try
+            string[] args = rawMessage.Split(_SplitChars, 4); // limit the number of pieces
+            if (args.Length == 4)
             {
-                string[] args = rawMessage.Split(_SplitChars, 4); // limit the number of pieces
-                if (args.Length == 4)
+                int id;
+                if (int.TryParse(args[1].Replace("+", ""), out id))
+                    evtMsg.AckId = id;
+
+                evtMsg.Endpoint = args[2];
+                evtMsg.MessageText = args[3];
+
+                if (!string.IsNullOrEmpty(evtMsg.MessageText) && evtMsg.MessageText.Contains("name") && evtMsg.MessageText.Contains("args"))
                 {
-                    int id;
-                    if (int.TryParse(args[1].Replace("+", ""), out id))
-                        evtMsg.AckId = id;
-
-                    evtMsg.Endpoint = args[2];
-                    evtMsg.MessageText = args[3];
-
-                    if (!string.IsNullOrEmpty(evtMsg.MessageText) && evtMsg.MessageText.Contains("name") && evtMsg.MessageText.Contains("args"))
-                    {
-                        evtMsg.Json = JsonEncodedEventMessage.Deserialize(evtMsg.MessageText);
-                        evtMsg.Event = evtMsg.Json.Name;
-                    }
-                    else
-                        evtMsg.Json = new JsonEncodedEventMessage();
+                    evtMsg.Json = JsonEncodedEventMessage.Deserialize(evtMsg.MessageText);
+                    evtMsg.Event = evtMsg.Json.Name;
                 }
-            }
-            catch (Exception ex)
-            {
-                Trace.WriteLine(ex);
+                else
+                    evtMsg.Json = new JsonEncodedEventMessage();
             }
 
             return evtMsg;

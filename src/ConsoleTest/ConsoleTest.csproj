@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CU.cs" />
+    <Compile Include="NewClientTest.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -51,6 +52,10 @@
     <ProjectReference Include="..\SocketEvent.NET\SocketEvent.NET.csproj">
       <Project>{0FB9A193-CF7B-4F8C-96F9-6D3295E01F6B}</Project>
       <Name>SocketEvent.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SocketIO.Client\SocketIO.Client.csproj">
+      <Project>{4D155761-DE4C-48EB-A0BE-A94C2F601959}</Project>
+      <Name>SocketIO.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

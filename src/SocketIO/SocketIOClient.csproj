@@ -89,10 +89,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="EventArgsSiocError.cs" />
     <Compile Include="Helpers\SocketIOHandshake.cs" />
     <Compile Include="Helpers\SocketIOMessageTypes.cs" />
-    <Compile Include="MessageEventArgs.cs" />
     <Compile Include="Messages\MessageSiocAck.cs" />
     <Compile Include="Messages\MessageSiocDisconnect.cs" />
     <Compile Include="Messages\MessageSioc.cs" />
@@ -106,7 +104,6 @@
     <Compile Include="Messages\MessageSiocNoop.cs" />
     <Compile Include="Messages\RegistrationManager.cs" />
     <Compile Include="Messages\MessageSiocText.cs" />
-    <Compile Include="Models\Enums\SocketIOEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

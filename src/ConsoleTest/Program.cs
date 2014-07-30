@@ -15,19 +15,22 @@ namespace ConsoleTest
 
         static void Main(string[] args)
         {
+            NewClientTest.Test();
             //ISocketEventClient client = SocketEventClientFactory.CreateInstance(URL);
-            SubscribeTest();
+            //SubscribeTest();
             Console.ReadLine();
         }
 
         public static void SubscribeTest()
         {
             SocketEventClient client = SocketEventClientFactory.CreateInstance("MerchantServiceClient", URL);
+            //SocketEventClient client = SocketEventClientFactory.CreateInstance(URL);
             client.BizArrived += new Func<SocketEventRequestDto, RequestResult>(client_BizArrived);
             client.BizSubscribed += new Action<SocketEventResponseDto>(client_BizSubscribed);
 
             client.Subscribe("PriceChanged");
             client.Subscribe("PublishSalesState");
+            client.Enqueue("PriceChanged", new { ListingSku = "5100703" });
             //client.Enqueue(eventName);
         }
 

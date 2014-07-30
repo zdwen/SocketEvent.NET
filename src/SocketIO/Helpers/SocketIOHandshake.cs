@@ -8,20 +8,20 @@ namespace SocketIOClient
 {
     public class SocketIOHandshake
     {
-        public string SID { get; set; }
+        public string SessionID { get; set; }
         public string ErrorMessage { get; set; }
         public bool HasError { get { return !string.IsNullOrWhiteSpace(ErrorMessage); } }
 
         public void ResetConnection()
         {
-            SID = ErrorMessage = string.Empty;
+            SessionID = ErrorMessage = string.Empty;
         }
 
         public void UpdateFromSocketIOResponse(string value)
         {
             ErrorMessage = string.Empty;
             string[] items = value.Split(new char[] { ':' });
-            SID = items[0];
+            SessionID = items[0];
         }
     }
 }

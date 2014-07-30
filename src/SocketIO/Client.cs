@@ -88,7 +88,7 @@ namespace SocketIOClient
         /// <summary>
         /// Value of the last error message text  
         /// </summary>
-        public string LastErrorMessage = string.Empty;
+        string _lastErrorMsg = string.Empty;
 
 
 
@@ -132,14 +132,14 @@ namespace SocketIOClient
                     ConnectionOpenEvent.Reset();
                     RequestHandshake(_uri);// perform an initial HTTP request as a new, non-handshaken connection
 
-                    if (string.IsNullOrWhiteSpace(_handShake.SID) || _handShake.HasError)
+                    if (string.IsNullOrWhiteSpace(_handShake.SessionID) || _handShake.HasError)
                     {
-                        LastErrorMessage = string.Format("Error initializing handshake with {0}", _uri.ToString());
+                        _lastErrorMsg = string.Format("Error initializing handshake with {0}", _uri.ToString());
                     }
                     else
                     {
                         string wsScheme = (_uri.Scheme == Uri.UriSchemeHttps ? "wss" : "ws");
-                        _wsClient = new WebSocket(string.Format("{0}://{1}:{2}/socket.io/1/websocket/{3}", wsScheme, _uri.Host, _uri.Port, _handShake.SID), string.Empty, SocketVersion);
+                        _wsClient = new WebSocket(string.Format("{0}://{1}:{2}/socket.io/1/websocket/{3}", wsScheme, _uri.Host, _uri.Port, _handShake.SessionID), string.Empty, SocketVersion);
 
                         _wsClient.EnableAutoSendPing = false; // #4 tkiley: Websocket4net client library initiates a websocket heartbeat, causes delivery problems
 
@@ -407,7 +407,11 @@ namespace SocketIOClient
                     string msgString;
 
                     if (_outboundQueue.TryTake(out msgString, 500))
+                    {
                         _wsClient.Send(msgString);
+                        Console.WriteLine("{0}-_wsClient.Send('{1}');",DateTime.Now, msgString);
+                        Log("{0}-_wsClient.Send('{1}');", DateTime.Now, msgString);
+                    }
                 }
                 else
                     ConnectionOpenEvent.WaitOne(2000); // wait for connection event
