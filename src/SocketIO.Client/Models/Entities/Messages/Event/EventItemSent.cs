@@ -5,9 +5,8 @@ using System.Text;
 
 namespace SocketIO.Client.Models.Entities.Messages.Event
 {
-    public class EventInfo<T> where T : EventItem, new()
+    public class EventItemSent : EventItem
     {
-        public string Name { get; set; }
-        public List<T> Args { get; set; }
+        public string SenderId { get; set; }
     }
 }

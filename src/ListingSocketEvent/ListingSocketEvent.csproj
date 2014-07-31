@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4D155761-DE4C-48EB-A0BE-A94C2F601959}</ProjectGuid>
+    <ProjectGuid>{AEC676D4-01C9-4C0D-950B-D32FAACB6318}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SocketIO.Client</RootNamespace>
-    <AssemblyName>SocketIO.Client</AssemblyName>
+    <RootNamespace>ListingSocketEvent</RootNamespace>
+    <AssemblyName>ListingSocketEvent</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,32 +38,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebSocket4Net">
-      <HintPath>..\..\lib\WebSocket4Net.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Entities\Converter\EnumJsonConverter.cs" />
-    <Compile Include="Models\Entities\Messages\Event\EventItemReceived.cs" />
-    <Compile Include="Models\Entities\Messages\Event\EventItemSent.cs" />
-    <Compile Include="NewClient.cs" />
-    <Compile Include="CU.cs" />
-    <Compile Include="Models\Entities\IMessageReceived.cs" />
-    <Compile Include="Models\Entities\IMessageSend.cs" />
-    <Compile Include="Models\Entities\MessageSioc.cs" />
-    <Compile Include="Models\Entities\MessageSiocAck.cs" />
-    <Compile Include="Models\Entities\MessageSiocConnect.cs" />
-    <Compile Include="Models\Entities\MessageSiocEvent.cs" />
-    <Compile Include="Models\Entities\MessageSiocHeartbeat.cs" />
-    <Compile Include="Models\Entities\Messages\Acknownledge\AcknowledgeItem.cs" />
-    <Compile Include="Models\Entities\Messages\Acknownledge\Error.cs" />
-    <Compile Include="Models\Entities\Messages\Event\EventInfo.cs" />
-    <Compile Include="Models\Entities\Messages\Event\EventItem.cs" />
-    <Compile Include="Models\Enums\Acknownledge\Status.cs" />
-    <Compile Include="Models\Enums\MessageType.cs" />
+    <Compile Include="Models\Entities\EventInformation.cs" />
+    <Compile Include="Models\Enums\Operation.cs" />
+    <Compile Include="SocketEventClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SocketIO.Client\SocketIO.Client.csproj">
+      <Project>{4D155761-DE4C-48EB-A0BE-A94C2F601959}</Project>
+      <Name>SocketIO.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

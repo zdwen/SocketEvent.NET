@@ -16,7 +16,6 @@ namespace ConsoleTest
         static void Main(string[] args)
         {
             NewClientTest.Test();
-            //ISocketEventClient client = SocketEventClientFactory.CreateInstance(URL);
             //SubscribeTest();
             Console.ReadLine();
         }

@@ -5,11 +5,15 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using SocketIO.Client.Models.Entities.Converter;
+using System.Threading;
 
 namespace SocketIO.Client
 {
     static class CU
     {
+        static JsonSerializerSettings _setting;
+
         static object _obj4Lock = new object();
         internal static void Write2File(string fileFullPath, string content)
         {
@@ -24,13 +28,28 @@ namespace SocketIO.Client
             }
         }
 
-        internal static void Log(string format, params object[] args)
+        static CU()
         {
-            string sFileName = string.Format("{0:yyyy-MM-dd}.txt", DateTime.Now);
-            Write2File(sFileName, string.Format(format, args));
+            _setting = new JsonSerializerSettings()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                Converters = new JsonConverter[] { new EnumJsonConverter() },
+            };
         }
 
-        static JsonSerializerSettings _setting = new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+        internal static void Log(string format, params object[] args)
+        {
+            string sMsg = args.Length == 0
+                ? format
+                : string.Format(format, args);
+
+            sMsg = string.Format("{0}-【{1}】-{2}", DateTime.Now, Thread.CurrentThread.ManagedThreadId, sMsg);
+
+            Console.WriteLine(sMsg);
+
+            string sFileName = string.Format("{0:yyyy-MM-dd}.txt", DateTime.Now);
+            Write2File(sFileName, sMsg);
+        }
 
         public static string JsonSerialize(object obj)
         {
@@ -60,9 +79,7 @@ namespace SocketIO.Client
             if (typeof(T).IsEnum)
             {
                 if (obj == null)
-                {
                     return defaultValue;
-                }
 
                 T t = defaultValue;
                 string val = obj.ToString();

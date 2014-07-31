@@ -14,23 +14,29 @@ namespace ConsoleTest
 
         public static void Test()
         {
-            Client client = new Client(URL);
+            NewClient client = new NewClient(URL);
 
+            client.EventArrived += new Action<EventInfo<EventItemReceived>>(client_EventArrived);
 
-            Thread.Sleep(5 * 1000);
-            EventInfo eventInfo = new EventInfo()
+            EventInfo<EventItemSent> eventInfo = new EventInfo<EventItemSent>()
             {
-                Name = "PriceChanged",
-                Args = new List<dynamic>()
+                Name = "subscribe",
+                Args = new List<EventItemSent>()
                 {
-                    new {
+                    new EventItemSent() {
                         Event = "PriceChanged",
-                        RequestId = "64982e92-807f-4583-bf96-a42fe4e61bd6"
+                        //Event="ChangeSalesState",
+                        RequestId = Guid.NewGuid().ToString(),
+                        SenderId="MerchantServiceClient",
                     },
                 },
             };
 
             client.SendEvent(eventInfo);
+        }
+
+        static void client_EventArrived(EventInfo<EventItemReceived> obj)
+        {
         }
     }
 }

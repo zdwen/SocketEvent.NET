@@ -7,14 +7,15 @@ using SocketIO.Client.Models.Entities.Messages.Event;
 
 namespace SocketIO.Client.Models.Entities
 {
-    public class MessageSiocEvent : MessageSioc, IMessageSend, IMessageReceived
+    public class MessageSiocEvent<T> : MessageSioc, IMessageSend, IMessageReceived
+        where T : EventItem, new()
     {
         ///5:1+::{"name":"subscribe","args":[{"event":"PriceChanged","requestId":"31e1860b-2986-4dd8-92d2-c42424835afd","senderId":"02ab3d36-0866-4dd8-81b4-cf1bb1014e37"}]}
         ///5:1+::{"name":"subscribe","args":[{"event":"PriceChanged","requestId":"c5670571-f203-417d-a3f4-15cc85b56864","senderId":"MerchantServiceClient"}]}
         ///5:1+::{"name":"PublishSalesState","args":[{"requestId":"f8e72612-d404-4950-9673-0b3dcddd324a","event":"PublishSalesState","args":{"ListingSku":"5100718"}}]}
         public override MessageType MessageType { get { return MessageType.Event; } }
         public int AckId { get; private set; }
-        public EventInfo EventInfo { get; set; }
+        public EventInfo<T> EventInfo { get; set; }
         public string RawMessage { get; set; }
 
         public string String4Sent
@@ -50,7 +51,9 @@ namespace SocketIO.Client.Models.Entities
             string[] sInfos = RawMessage.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 
             AckId = Convert.ToInt32(sInfos[1].Replace("+", string.Empty));
-            EventInfo = CU.JsonDeserialize<EventInfo>(sInfos[3]);
+
+            string sEventInfo = RawMessage.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries)[1];
+            EventInfo = CU.JsonDeserialize<EventInfo<T>>(sEventInfo);
         }
     }
 }

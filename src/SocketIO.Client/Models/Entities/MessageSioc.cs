@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SocketIO.Client.Models.Enums;
+using SocketIO.Client.Models.Entities.Messages.Event;
 
 namespace SocketIO.Client.Models.Entities
 {
@@ -21,7 +22,7 @@ namespace SocketIO.Client.Models.Entities
                 case MessageType.Heartbeat:
                     return new MessageSiocHeartbeat();
                 case MessageType.Event:
-                    return new MessageSiocEvent(rawMessage);
+                    return new MessageSiocEvent<EventItemReceived>(rawMessage);
                 case MessageType.Ack:
                     return new MessageSiocAck(rawMessage);
                 case MessageType.Disconnect:
@@ -30,7 +31,9 @@ namespace SocketIO.Client.Models.Entities
                 case MessageType.Error:
                 case MessageType.Noop:
                 default:
-                    throw new Exception(string.Format("【闻祖东 2014-7-30-164001】尚未实现这种消息类型。{0}，RawMessage为：【{1}】", msgType, rawMessage));
+                    string sExceptionMsg = string.Format("【闻祖东 2014-7-30-164001】尚未实现这种消息类型。{0}，RawMessage为：【{1}】", msgType, rawMessage);
+                    CU.Log(sExceptionMsg);
+                    throw new Exception(sExceptionMsg);
             }
         }
     }
