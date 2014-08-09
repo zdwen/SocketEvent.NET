@@ -10,9 +10,10 @@ namespace ConsoleTest
 {
     class NewClientTest
     {
-        const string URL = "http://192.168.1.112:2900";
+        //const string URL = "http://192.168.1.112:2900";
+        const string URL = "http://127.0.0.1:2900";
 
-        public static void Test()
+        public static void SubscribePriceChanged()
         {
             NewClient client = new NewClient(URL);
 
@@ -27,12 +28,17 @@ namespace ConsoleTest
                         Event = "PriceChanged",
                         //Event="ChangeSalesState",
                         RequestId = Guid.NewGuid().ToString(),
-                        SenderId="MerchantServiceClient",
+                        SenderId="WzdClient_Net",
                     },
                 },
             };
 
             client.SendEvent(eventInfo);
+        }
+
+        public static void EnqueuePriceChanged()
+        {
+
         }
 
         static void client_EventArrived(EventInfo<EventItemReceived> obj)

@@ -102,13 +102,15 @@ namespace SocketEvent.Impl
         /// <summary>
         /// TODO【闻祖东 2014-7-28-173407】这个地方，需要实现异步。
         /// </summary>
-        public void Enqueue(string eventName, dynamic args = null)
+        public void Enqueue(string eventName, int tryTimes = 1, int timeout = 60, dynamic args = null)
         {
             EnqueueDto dto = new EnqueueDto()
             {
                 Event = eventName,
                 SenderId = _clientId,
-                Args = args
+                Args = args,
+                TryTimes = tryTimes == 0 ? 1 : tryTimes,
+                Timeout = timeout,
             };
 
             _socketIoClient.Emit(ENQUEUE, dto, string.Empty, SocketHandler_Emit);

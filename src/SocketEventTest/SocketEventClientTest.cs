@@ -85,7 +85,7 @@ namespace SocketEventTest
         public void SubscribeTest()
         {
             SocketEventClient client;
-            client = SocketEventClientFactory.CreateInstance("MerchantServiceClient", URL);
+            client = SocketEventClientFactory.CreateInstance("WzdClient", URL);
             string eventName = "TestEvent";
             //SocketEventResponse serverResponse = null;
             //SocketEventRequest serverRequest = null;

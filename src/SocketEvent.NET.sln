@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketIO.Client", "SocketIO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListingSocketEvent", "ListingSocketEvent\ListingSocketEvent.csproj", "{AEC676D4-01C9-4C0D-950B-D32FAACB6318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestForm", "TestForm\TestForm.csproj", "{EF7F6813-BD99-42A5-8217-023886C7ABFD}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = SocketEvent.NET.vsmdi
@@ -160,6 +162,26 @@ Global
 		{AEC676D4-01C9-4C0D-950B-D32FAACB6318}.ReleaseILMerge|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{AEC676D4-01C9-4C0D-950B-D32FAACB6318}.ReleaseILMerge|Mixed Platforms.Build.0 = Release|Any CPU
 		{AEC676D4-01C9-4C0D-950B-D32FAACB6318}.ReleaseILMerge|x86.ActiveCfg = Release|Any CPU
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Debug|x86.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Debug|x86.Build.0 = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.DebugILMerge|Any CPU.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.DebugILMerge|Mixed Platforms.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.DebugILMerge|Mixed Platforms.Build.0 = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.DebugILMerge|x86.ActiveCfg = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.DebugILMerge|x86.Build.0 = Debug|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Release|Any CPU.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Release|x86.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.Release|x86.Build.0 = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.ReleaseILMerge|Any CPU.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.ReleaseILMerge|Mixed Platforms.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.ReleaseILMerge|Mixed Platforms.Build.0 = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.ReleaseILMerge|x86.ActiveCfg = Release|x86
+		{EF7F6813-BD99-42A5-8217-023886C7ABFD}.ReleaseILMerge|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

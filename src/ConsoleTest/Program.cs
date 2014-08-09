@@ -11,25 +11,26 @@ namespace ConsoleTest
 {
     class Program
     {
-        const string URL = "http://192.168.1.112:2900";
+        //const string URL = "http://192.168.1.112:2900";
+        const string URL = "http://192.168.1.150:2900";
 
         static void Main(string[] args)
         {
-            NewClientTest.Test();
-            //SubscribeTest();
+            //NewClientTest.SubscribePriceChanged();
+            SubscribeTest();
             Console.ReadLine();
         }
 
         public static void SubscribeTest()
         {
-            SocketEventClient client = SocketEventClientFactory.CreateInstance("MerchantServiceClient", URL);
+            SocketEventClient client = SocketEventClientFactory.CreateInstance("WzdClient_Net", URL);
             //SocketEventClient client = SocketEventClientFactory.CreateInstance(URL);
             client.BizArrived += new Func<SocketEventRequestDto, RequestResult>(client_BizArrived);
             client.BizSubscribed += new Action<SocketEventResponseDto>(client_BizSubscribed);
 
             client.Subscribe("PriceChanged");
-            client.Subscribe("PublishSalesState");
-            client.Enqueue("PriceChanged", new { ListingSku = "5100703" });
+            //client.Subscribe("PublishSalesState");
+            client.Enqueue("PriceChanged", 1, 60, new { ListingSku = "5100703" });
             //client.Enqueue(eventName);
         }
 
