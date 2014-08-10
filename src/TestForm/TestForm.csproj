@@ -91,10 +91,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ListingSocketEvent\ListingSocketEvent.csproj">
-      <Project>{AEC676D4-01C9-4C0D-950B-D32FAACB6318}</Project>
-      <Name>ListingSocketEvent</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SocketIO.Client\SocketIO.Client.csproj">
       <Project>{4D155761-DE4C-48EB-A0BE-A94C2F601959}</Project>
       <Name>SocketIO.Client</Name>

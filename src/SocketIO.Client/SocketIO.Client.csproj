@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Agent4Server.cs" />
     <Compile Include="Models\Entities\Converter\EnumJsonConverter.cs" />
     <Compile Include="Models\Entities\MessageSiocEventNew.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventItemReceived.cs" />
@@ -66,6 +67,9 @@
     <Compile Include="Models\Entities\Messages\Event\EventItem.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventSummary.cs" />
     <Compile Include="Models\Entities\Messages\Event\IEventSummary.cs" />
+    <Compile Include="Models\Entities\Message\Client\MsgSiocEvent.cs" />
+    <Compile Include="Models\Entities\Message\MessageSioc.cs" />
+    <Compile Include="Models\Entities\Message\Server\MsgSiocEvent.cs" />
     <Compile Include="Models\Enums\Acknownledge\Status.cs" />
     <Compile Include="Models\Enums\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

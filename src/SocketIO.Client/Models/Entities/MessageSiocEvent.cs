@@ -17,7 +17,6 @@ namespace SocketIO.Client.Models.Entities
         public int AckId { get; private set; }
         public EventInfo<T> EventInfo { get; set; }
         public string RawMessage { get; set; }
-        //public 
 
         public string String4Sent
         {

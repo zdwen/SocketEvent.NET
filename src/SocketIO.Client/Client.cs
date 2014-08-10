@@ -165,7 +165,7 @@ namespace SocketIO.Client
         {
             MessageSiocEventNew<T> msg = null;
             lock (_lock4ackID)
-                msg = new MessageSiocEventNew<T>(++_ackID) { EventInfo = new EventSummary<T>() { Name = eventInfo.Name, Data = eventInfo }, };
+                msg = new MessageSiocEventNew<T>(++_ackID) { EventInfo = new EventSummary<T>() { Name = eventInfo.Name, Args = eventInfo }, };
 
             SendMessage(msg);
         }
