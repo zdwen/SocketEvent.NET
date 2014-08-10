@@ -7,17 +7,16 @@ using SocketIO.Client.Models.Entities.Messages.Event;
 
 namespace SocketIO.Client.Models.Entities
 {
-    public class MessageSiocEvent<T> : MessageSioc, IMessageSend, IMessageReceived
-        where T : EventItem, new()
+    public class MessageSiocEventNew<T> : MessageSioc, IMessageSend, IMessageReceived
+        where T :  new()
     {
         ///5:1+::{"name":"subscribe","args":[{"event":"PriceChanged","requestId":"31e1860b-2986-4dd8-92d2-c42424835afd","senderId":"02ab3d36-0866-4dd8-81b4-cf1bb1014e37"}]}
         ///5:1+::{"name":"subscribe","args":[{"event":"PriceChanged","requestId":"c5670571-f203-417d-a3f4-15cc85b56864","senderId":"MerchantServiceClient"}]}
         ///5:1+::{"name":"PublishSalesState","args":[{"requestId":"f8e72612-d404-4950-9673-0b3dcddd324a","event":"PublishSalesState","args":{"ListingSku":"5100718"}}]}
         public override MessageType MessageType { get { return MessageType.Event; } }
         public int AckId { get; private set; }
-        public EventInfo<T> EventInfo { get; set; }
+        public EventSummary<T> EventInfo { get; set; }
         public string RawMessage { get; set; }
-        //public 
 
         public string String4Sent
         {
@@ -32,7 +31,7 @@ namespace SocketIO.Client.Models.Entities
         /// 【闻祖东 2014-7-30-181730】由Client端构造。
         /// </summary>
         /// <param name="ackId"></param>
-        public MessageSiocEvent(int ackId)
+        public MessageSiocEventNew(int ackId)
         {
             AckId = ackId;
         }
@@ -41,7 +40,7 @@ namespace SocketIO.Client.Models.Entities
         /// 【闻祖东 2014-7-30-181711】由来自服务端的字符串构造。
         /// </summary>
         /// <param name="rawMessage"></param>
-        public MessageSiocEvent(string rawMessage)
+        public MessageSiocEventNew(string rawMessage)
         {
             RawMessage = rawMessage;
             GenerateProperties();
@@ -54,7 +53,7 @@ namespace SocketIO.Client.Models.Entities
             AckId = Convert.ToInt32(sInfos[1].Replace("+", string.Empty));
 
             string sEventInfo = RawMessage.Split(new string[] { "::" }, StringSplitOptions.RemoveEmptyEntries)[1];
-            EventInfo = CU.JsonDeserialize<EventInfo<T>>(sEventInfo);
+            EventInfo = CU.JsonDeserialize<EventSummary<T>>(sEventInfo);
         }
     }
 }

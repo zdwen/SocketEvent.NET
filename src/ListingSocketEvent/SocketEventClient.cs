@@ -15,7 +15,7 @@ namespace ListingSocketEvent
         public string Url { get; private set; }
         public string ListingSystemId { get; private set; }
 
-        NewClient _socketIoClient;
+        Client _socketIoClient;
 
         public event Action<EventInformation> BizArrived;
 
@@ -23,7 +23,7 @@ namespace ListingSocketEvent
         {
             Url = url;
             ListingSystemId = listingSystemId;
-            _socketIoClient = new NewClient(Url);
+            _socketIoClient = new Client(Url);
             _socketIoClient.EventArrived += EventArrivedHandler;
         }
 

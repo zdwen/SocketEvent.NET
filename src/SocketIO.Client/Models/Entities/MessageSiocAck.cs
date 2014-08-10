@@ -29,15 +29,15 @@ namespace SocketIO.Client.Models.Entities
         {
             AckId = msgEvent.AckId;
             EventInfos = new List<AcknowledgeItem>();
-            foreach (EventItem item in msgEvent.EventInfo.Args)
-            {
-                EventInfos.Add(new AcknowledgeItem()
-                {
-                    RequestId = item.RequestId,
-                    Status = Status.Success,
-                    Error = null,
-                });
-            }
+            //foreach (EventItem item in msgEvent.EventInfo.Args)
+            //{
+            //    EventInfos.Add(new AcknowledgeItem()
+            //    {
+            //        RequestId = item.RequestId,
+            //        Status = Status.Success,
+            //        Error = null,
+            //    });
+            //}
         }
 
         public void GenerateProperties()

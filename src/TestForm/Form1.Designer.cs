@@ -33,7 +33,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnEnqueueSalesState = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnSendWzdEventNew = new System.Windows.Forms.Button();
             this.btnSendWzdEvent = new System.Windows.Forms.Button();
+            this.btnSendString = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +85,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnSendString);
+            this.groupBox2.Controls.Add(this.btnSendWzdEventNew);
             this.groupBox2.Controls.Add(this.btnSendWzdEvent);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 67);
@@ -91,6 +95,16 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "groupBox2";
+            // 
+            // btnSendWzdEventNew
+            // 
+            this.btnSendWzdEventNew.Location = new System.Drawing.Point(170, 29);
+            this.btnSendWzdEventNew.Name = "btnSendWzdEventNew";
+            this.btnSendWzdEventNew.Size = new System.Drawing.Size(137, 23);
+            this.btnSendWzdEventNew.TabIndex = 1;
+            this.btnSendWzdEventNew.Text = "SendWzdEventNew";
+            this.btnSendWzdEventNew.UseVisualStyleBackColor = true;
+            this.btnSendWzdEventNew.Click += new System.EventHandler(this.btnSendWzdEventNew_Click);
             // 
             // btnSendWzdEvent
             // 
@@ -101,6 +115,16 @@
             this.btnSendWzdEvent.Text = "SendWzdEvent";
             this.btnSendWzdEvent.UseVisualStyleBackColor = true;
             this.btnSendWzdEvent.Click += new System.EventHandler(this.btnSendWzdEvent_Click);
+            // 
+            // btnSendString
+            // 
+            this.btnSendString.Location = new System.Drawing.Point(325, 29);
+            this.btnSendString.Name = "btnSendString";
+            this.btnSendString.Size = new System.Drawing.Size(137, 23);
+            this.btnSendString.TabIndex = 2;
+            this.btnSendString.Text = "SendString";
+            this.btnSendString.UseVisualStyleBackColor = true;
+            this.btnSendString.Click += new System.EventHandler(this.btnSendString_Click);
             // 
             // Form1
             // 
@@ -125,6 +149,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnEnqueueSalesState;
         private System.Windows.Forms.Button btnSendWzdEvent;
+        private System.Windows.Forms.Button btnSendWzdEventNew;
+        private System.Windows.Forms.Button btnSendString;
     }
 }
 

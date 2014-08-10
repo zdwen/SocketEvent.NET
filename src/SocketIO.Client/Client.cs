@@ -20,16 +20,14 @@ namespace SocketIO.Client
     /// 2.暂时未考虑Authentication的业务，故Headers的相应业务也删除；
     /// 3.
     /// </summary>
-    public class NewClient : IDisposable
+    public class Client : IDisposable
     {
-        const WebSocketVersion _dftWsVersion = WebSocketVersion.Rfc6455;
-        int _ackID;
-
         /// <summary>
-        /// 【闻祖东 2014-7-25-170952】等待出去的消息队列。
-        /// 其实是应用于当前的场景是，基本上传递的消息都是字符串，所以用的是一个string的集合。
+        /// 【闻祖东 2014-8-10-103756】_askID的值发生改变必须是在线程安全的场景。
         /// </summary>
-        BlockingCollection<string> _outboundQueue;
+        int _ackID;
+        object _lock4ackID;
+
         Uri _uri;
         WebSocket _wsClient;
         string _sessionID;
@@ -37,13 +35,13 @@ namespace SocketIO.Client
 
         public event Action<EventInfo<EventItemReceived>> EventArrived;
 
-        public NewClient(string url)
+        public Client(string url)
         {
             _switch4Communication = new ManualResetEvent(false);
             _uri = new Uri(url);
+            _lock4ackID = new object();
+            _ackID = 0;
             Connect();
-            _outboundQueue = new BlockingCollection<string>(new ConcurrentQueue<string>());
-            //dequeuOutBoundMsgTask = Task.Factory.StartNew(() => DequeueOutboundMessages(), TaskCreationOptions.LongRunning);
         }
 
         void Connect()
@@ -52,7 +50,7 @@ namespace SocketIO.Client
             GetSessionID();
 
             string wsScheme = (_uri.Scheme == Uri.UriSchemeHttps ? "wss" : "ws");
-            _wsClient = new WebSocket(string.Format("{0}://{1}:{2}/socket.io/1/websocket/{3}", wsScheme, _uri.Host, _uri.Port, _sessionID), string.Empty, _dftWsVersion);
+            _wsClient = new WebSocket(string.Format("{0}://{1}:{2}/socket.io/1/websocket/{3}", wsScheme, _uri.Host, _uri.Port, _sessionID), string.Empty, WebSocketVersion.Rfc6455);
 
             _wsClient.EnableAutoSendPing = false; // #4 tkiley: Websocket4net client library initiates a websocket heartbeat, causes delivery problems
 
@@ -162,7 +160,20 @@ namespace SocketIO.Client
             SendMessage(msg);
         }
 
+        public void SendEvent<T>(T eventInfo)
+            where T : IEventSummary, new()
+        {
+            MessageSiocEventNew<T> msg = null;
+            lock (_lock4ackID)
+                msg = new MessageSiocEventNew<T>(++_ackID) { EventInfo = new EventSummary<T>() { Name = eventInfo.Name, Data = eventInfo }, };
 
+            SendMessage(msg);
+        }
+
+        public void SendEvent(string eventInfo)
+        {
+            _wsClient.Send(eventInfo);
+        }
 
 
 

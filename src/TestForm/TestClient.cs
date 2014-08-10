@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SocketEvent;
 using SocketIO.Client;
 using SocketIO.Client.Models.Entities.Messages.Event;
+using TestForm.Entities.DTOs.Business;
+using TestForm.Entities.DTOs.Operations;
 
 namespace TestForm
 {
-    static class BizListingClient
+    static class TestClient
     {
         //const string URL = "http://192.168.1.150:2900";
         const string URL = "http://127.0.0.1:3000";
-        static NewClient _client;
+        static Client _client;
 
-        static BizListingClient()
+        static TestClient()
         {
-            _client = new NewClient(URL);
+            _client = new Client(URL);
             _client.EventArrived += new Action<EventInfo<EventItemReceived>>(client_EventArrived);
         }
 
@@ -36,6 +37,29 @@ namespace TestForm
             };
 
             _client.SendEvent(eventInfo);
+        }
+
+        public static void SendWzdEventNew()
+        {
+            DtoSocketIoEventBusiness<DtoStudent> eventInfo = new DtoSocketIoEventBusiness<DtoStudent>()
+            {
+                ClientID = "WzdClient",
+                EventName = "WzdEvent",
+                RequestID = Guid.NewGuid().ToString(),
+                Data = new DtoStudent()
+                {
+                    Name = "Jack Bauer",
+                    Age = 23,
+                    Address = "LA America",
+                },
+            };
+
+            _client.SendEvent(eventInfo);
+        }
+
+        public static void SendString()
+        {
+
         }
 
         static void client_EventArrived(EventInfo<EventItemReceived> obj)

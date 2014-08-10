@@ -20,22 +20,29 @@ namespace TestForm
 
         private void btnSubscribe_Click(object sender, EventArgs e)
         {
-            BizSocketEventNet.Subscribe();
         }
 
         private void btnEnqueue_Click(object sender, EventArgs e)
         {
-            BizSocketEventNet.EnqueuePriceChanged();
         }
 
         private void btnEnqueueSalesState_Click(object sender, EventArgs e)
         {
-            BizSocketEventNet.EnqueuePublishSalesState();
         }
 
         private void btnSendWzdEvent_Click(object sender, EventArgs e)
         {
-            BizListingClient.SendWzdEvent();
+            TestClient.SendWzdEvent();
+        }
+
+        private void btnSendWzdEventNew_Click(object sender, EventArgs e)
+        {
+            TestClient.SendWzdEventNew();
+        }
+
+        private void btnSendString_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

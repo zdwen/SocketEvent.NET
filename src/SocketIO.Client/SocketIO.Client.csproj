@@ -48,9 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Entities\Converter\EnumJsonConverter.cs" />
+    <Compile Include="Models\Entities\MessageSiocEventNew.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventItemReceived.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventItemSent.cs" />
-    <Compile Include="NewClient.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="CU.cs" />
     <Compile Include="Models\Entities\IMessageReceived.cs" />
     <Compile Include="Models\Entities\IMessageSend.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Models\Entities\Messages\Acknownledge\Error.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventInfo.cs" />
     <Compile Include="Models\Entities\Messages\Event\EventItem.cs" />
+    <Compile Include="Models\Entities\Messages\Event\EventSummary.cs" />
+    <Compile Include="Models\Entities\Messages\Event\IEventSummary.cs" />
     <Compile Include="Models\Enums\Acknownledge\Status.cs" />
     <Compile Include="Models\Enums\MessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

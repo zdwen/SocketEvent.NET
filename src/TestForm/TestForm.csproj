@@ -47,8 +47,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BizListingClient.cs" />
-    <Compile Include="BizSocketEventNet.cs" />
+    <Compile Include="Entities\DTOs\Business\DtoBusiness.cs" />
+    <Compile Include="Entities\DTOs\Business\DtoStudent.cs" />
+    <Compile Include="Entities\DTOs\Event\DtoEventBase.cs" />
+    <Compile Include="Entities\DTOs\Event\DtoEventEnqueue.cs" />
+    <Compile Include="Entities\DTOs\Event\DtoEventSubscribe.cs" />
+    <Compile Include="Entities\DTOs\Operations\DtoSocketIoEventBusiness.cs" />
+    <Compile Include="Entities\DTOs\Operations\DtoSocketIoEventOperation.cs" />
+    <Compile Include="Entities\DTOs\Operations\DtoSocketIoEventBase.cs" />
+    <Compile Include="Enums\Operation.cs" />
+    <Compile Include="TestClient.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,17 +95,9 @@
       <Project>{AEC676D4-01C9-4C0D-950B-D32FAACB6318}</Project>
       <Name>ListingSocketEvent</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SocketEvent.NET\SocketEvent.NET.csproj">
-      <Project>{0FB9A193-CF7B-4F8C-96F9-6D3295E01F6B}</Project>
-      <Name>SocketEvent.NET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SocketIO.Client\SocketIO.Client.csproj">
       <Project>{4D155761-DE4C-48EB-A0BE-A94C2F601959}</Project>
       <Name>SocketIO.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SocketIO\SocketIOClient.csproj">
-      <Project>{352C9BC1-F74C-4741-A09D-7227BC60C057}</Project>
-      <Name>SocketIOClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
