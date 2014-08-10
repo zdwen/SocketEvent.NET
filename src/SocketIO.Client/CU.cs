@@ -10,7 +10,7 @@ using System.Threading;
 
 namespace SocketIO.Client
 {
-    static class CU
+    public static class CU
     {
         static JsonSerializerSettings _setting;
 

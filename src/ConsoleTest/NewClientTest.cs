@@ -8,7 +8,7 @@ using SocketIO.Client.Models.Entities.Messages.Event;
 
 namespace ConsoleTest
 {
-    class NewClientTest
+    public static class NewClientTest
     {
         //const string URL = "http://192.168.1.112:2900";
         const string URL = "http://127.0.0.1:2900";

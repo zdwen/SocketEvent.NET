@@ -31,9 +31,11 @@
             this.btnSubscribe = new System.Windows.Forms.Button();
             this.btnEnqueue = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnEnqueueSalesState = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnSendWzdEvent = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSubscribe
@@ -69,16 +71,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "BizSocketEventNet";
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 67);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(555, 69);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "groupBox2";
-            // 
             // btnEnqueueSalesState
             // 
             this.btnEnqueueSalesState.Location = new System.Drawing.Point(257, 20);
@@ -88,6 +80,27 @@
             this.btnEnqueueSalesState.Text = "Enqueue(PublishSalesState)";
             this.btnEnqueueSalesState.UseVisualStyleBackColor = true;
             this.btnEnqueueSalesState.Click += new System.EventHandler(this.btnEnqueueSalesState_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.btnSendWzdEvent);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 67);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(555, 69);
+            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "groupBox2";
+            // 
+            // btnSendWzdEvent
+            // 
+            this.btnSendWzdEvent.Location = new System.Drawing.Point(18, 29);
+            this.btnSendWzdEvent.Name = "btnSendWzdEvent";
+            this.btnSendWzdEvent.Size = new System.Drawing.Size(137, 23);
+            this.btnSendWzdEvent.TabIndex = 0;
+            this.btnSendWzdEvent.Text = "SendWzdEvent";
+            this.btnSendWzdEvent.UseVisualStyleBackColor = true;
+            this.btnSendWzdEvent.Click += new System.EventHandler(this.btnSendWzdEvent_Click);
             // 
             // Form1
             // 
@@ -99,6 +112,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -110,6 +124,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btnEnqueueSalesState;
+        private System.Windows.Forms.Button btnSendWzdEvent;
     }
 }
 

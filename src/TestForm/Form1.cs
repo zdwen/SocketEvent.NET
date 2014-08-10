@@ -32,5 +32,10 @@ namespace TestForm
         {
             BizSocketEventNet.EnqueuePublishSalesState();
         }
+
+        private void btnSendWzdEvent_Click(object sender, EventArgs e)
+        {
+            BizListingClient.SendWzdEvent();
+        }
     }
 }
